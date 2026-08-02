@@ -40,6 +40,15 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/favicon.ico",
+                                "/assets/**",
+                                "/*.js",
+                                "/*.css",
+                                "/*.ico"
+                        ).permitAll()
+                        .requestMatchers(
                                 new AntPathRequestMatcher("/auth/**"),
                                 new AntPathRequestMatcher("/swagger-ui.html"),
                                 new AntPathRequestMatcher("/swagger-ui/**"),
@@ -50,7 +59,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/**"))
                         .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
-                        .anyRequest().hasAuthority("ROLE_ADMIN")
+                        .anyRequest().authenticated()
                 )
 
                 // 🔹 Manejo de errores 401 y 403
